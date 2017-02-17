@@ -1,5 +1,5 @@
 <?php
-include ('includes/configure.php');  /*inclides configure file for database connection*/
+include ('includes/configure.php');  /*includes configure file for database connection*/
 
 /* $_GET['term'] stores the value inserted in train search form in live-status.php*/
 if (isset($_GET['term'])) {
