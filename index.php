@@ -1,5 +1,5 @@
 <?php
-include ('includes/configure.php'); /*inclides configure file for database connection*/
+include ('includes/configure.php'); /*includes configure file for database connection*/
 
 include ('header.php'); /* inlcudes header file which consist meta tags and nav bar of website*/
 
