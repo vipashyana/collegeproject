@@ -1,12 +1,14 @@
 <?php
-include ('includes/configure.php');
+include ('includes/configure.php'); /*inclides configure file for database connection*/
 
-include ('header.php');
+include ('header.php'); /* inlcudes header file which consist meta tags and nav bar of website*/
 
+/* Stores the get value of $page variable in url and routes according to its value*/
+/* Routing mechanism for single page web application */
 $page=$_GET['page'];
    switch ($page)
 		    {
-          case 'national-train-enquiry-system' : include ('pages/live-status.php');
+          case 'national-train-enquiry-system' : include ('pages/live-status.php');   
 	        break;
 
           case 'pnr-status' : include ('pages/pnr-status.php');
@@ -32,10 +34,10 @@ $page=$_GET['page'];
           break;
 
 
-          default: include('pages/home.php');
+          default: include('pages/home.php');    /* if $page is empty or get $page is empty then routes to home.php in pages folder (default value)*/
           break;
 
         }
 
-include ('footer.php');
+include ('footer.php'); /* inlcludes footer file for website*/
 ?>
