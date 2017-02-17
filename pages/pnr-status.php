@@ -1,19 +1,12 @@
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-var js, fjs = d.getElementsByTagName(s)[0];
-if (d.getElementById(id)) return;
-js = d.createElement(s); js.id = id;
-js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=1536526606678024";
-fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
 
 <div class="content">
         <h1>Check Pnr Status</h1>
-
+<!-- form to input various variables using POST METHOD -->
         <form method="POST">
         <div class="input-box">
                <div class="input-area">
                    <div class="input-label"><label>Enter PNR Number</label></div>
+                    <!-- $pnr input variables  -->  
                    <div class="input-filed"><input type="number" name="pnr" placeholder="enter 10 Digit PNR number" max="10" min="10" required> </div>
                </div>
 
@@ -32,17 +25,22 @@ fjs.parentNode.insertBefore(js, fjs);
 
  if(isset($_POST['submit']))
 {
+/* variable for pnr number and intialized with POST method from above form*/  
 $pnr=mysqli_real_escape_string($conn, $_POST['pnr']);
 
-
+/*$file fetch data from api in json format*/
 $file=file_get_contents("INSERT_YOUR_API_URL_TO_FETCH_DATA_FROM_SERVER");
+         
+/* stores decoded value of $file variable in array*/ 
 $decode=json_decode($file,true);
 
+/* if respond code is 200 means api has returned true values*/
 if ($decode['response_code'] == 200)
 {
     echo "<div class='result-box'>";
     echo "<div class='result-display'>";
-        echo "PNR Enquiry for : <h3 style='color:red;'>".$decode['pnr']."</h3>";
+        echo "PNR Enquiry for : <h3 style='color:red;'>".$decode['pnr']."</h3>";  
+        /*prints pnr number queried*/
     echo "</div>";
 
     echo "<div class='result-table'>";
@@ -55,10 +53,10 @@ if ($decode['response_code'] == 200)
             echo "</tr>";
 
             echo "<tr>";
-               echo "<td>".$decode['train_num']."</th>";
-               echo "<td>".$decode['train_name']."</th>";
-               echo"<td>".$decode['from_station']['name']."</th>";
-               echo "<td>".$decode['to_station']['name']."</th>";
+               echo "<td>".$decode['train_num']."</th>";             /*prints train number of pnr*/
+               echo "<td>".$decode['train_name']."</th>";            /*prints train name*/
+               echo"<td>".$decode['from_station']['name']."</th>";   /*prints boarding point*/
+               echo "<td>".$decode['to_station']['name']."</th>";    /*prints destination point */
             echo "</tr>";
 
 
@@ -70,10 +68,10 @@ if ($decode['response_code'] == 200)
             echo "</tr>";
 
             echo "<tr>";
-               echo "<td>".$decode['chart_prepared']."</th>";
-               echo "<td>".$decode['class']."</th>";
-               echo"<td>".$decode['total_passengers']."</th>";
-               echo "<td>".$decode['doj']."</th>";
+               echo "<td>".$decode['chart_prepared']."</th>";/*prints chart status*/
+               echo "<td>".$decode['class']."</th>";/*prints reservation class of pnr number (SL/AC/3AC etc)*/
+               echo"<td>".$decode['total_passengers']."</th>"; /*prints passenger count*/
+               echo "<td>".$decode['doj']."</th>"; /*prints date of journey of pnr*/
             echo "</tr>";
 
            echo "</table>";
@@ -85,14 +83,15 @@ if ($decode['response_code'] == 200)
                echo"<th>Current Status</th>";
                echo "<th>Coach postion</th>";
             echo "</tr>";
-
+         
+          /* foreach loop echo's stored data in $decode variable*/
           foreach($decode['passengers'] as $pass)
            {
             echo "<tr>";
                echo "<td>".$pass['no']."</th>";
-               echo "<td>".$pass['booking_status']."</th>";
-               echo"<td>".$pass['current_status']."</th>";
-               echo "<td>".$pass['coach_position']."</th>";
+               echo "<td>".$pass['booking_status']."</th>"; /*prints booking status of pnr */
+               echo"<td>".$pass['current_status']."</th>";  /*prints current status of pnr*/
+               echo "<td>".$pass['coach_position']."</th>"; /*prints coach position if specified*/
             echo "</tr>";
           }
            echo "</table>";
@@ -101,7 +100,7 @@ if ($decode['response_code'] == 200)
 
    echo "</div>";
 }
-
+/* if respond code is 410 means pnr is either flushed or false pnr*/
 elseif ($decode['response_code'] == 410) {
    echo "<div class='result-box'>";
     echo "<div class='result-display'>";
@@ -111,6 +110,7 @@ elseif ($decode['response_code'] == 410) {
 
 }
 
+/* if respond code is 202 means pnr is correct but server is not responding*/
 elseif ($decode['response_code'] == 202) {
     echo "<div class='result-box'>";
     echo "<div class='result-display'>";
